@@ -10,9 +10,9 @@ class Cli
   def list
     puts "Here is the List:"
     @items = Library.list_items
-    # @items.each_with_index(1) do |item|
-    #   puts "#{i}. #{item.name} - #{item.atr1} - #{item.atr2}"
-    # end
+    @items.each_with_index do |item, i|
+      puts "#{i+1}. #{item.name} - #{item.atr1} - #{item.atr2}"
+    end
   end
 
   def menu
