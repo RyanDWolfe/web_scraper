@@ -1,3 +1,4 @@
+require_relative './library.rb'
 class Cli
 
   def call
@@ -8,11 +9,7 @@ class Cli
 
   def list
     puts "Here is the List:"
-    puts <<-DOC
-    1. Item One - ABC - 123
-    2. Item Two - DEF - 456
-    3. Item Three - GHI - 789
-    DOC
+    @items = Library.list_items
   end
 
   def menu
