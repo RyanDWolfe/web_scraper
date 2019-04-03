@@ -1,7 +1,43 @@
 class Cli
-  
+
   def call
-    puts "Here is the List:"
+    list
+    menu
+    close_program
   end
-  
+
+  def list
+    puts "Here is the List:"
+    puts <<-DOC
+    1. Item One - ABC - 123
+    2. Item Two - DEF - 456
+    3. Item Three - GHI - 789
+    DOC
+  end
+
+  def menu
+    puts "Enter the number you want more info on, type 'list' to return to the list or type 'exit':"
+    input = nil
+    while input != "exit"
+      input = gets.strip.downcase
+      case input
+      when "list"
+        list
+      when "1"
+        puts "You know about One"
+      when "2"
+        puts "You know about Two"
+      when "3"
+        puts "You know about Three"
+      else
+        puts "Item Not Found"
+        list
+      end
+    end
+  end
+
+  def close_program
+    puts "Good Bye!"
+  end
+
 end
