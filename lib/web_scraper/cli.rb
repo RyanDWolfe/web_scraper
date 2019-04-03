@@ -1,4 +1,3 @@
-require_relative './library.rb'
 class Cli
 
   def call
@@ -8,10 +7,11 @@ class Cli
   end
 
   def list
+    get_news
     puts "Here is the List:"
-    @items = Library.list_items
-    @items.each_with_index do |item, i|
-      puts "#{i+1}. #{item.name} - #{item.atr1} - #{item.atr2}"
+    @items = get_news
+    @items['articles'].each_with_index do |item, i|
+      puts "#{i+1}: #{item['title']}"
     end
   end
 
@@ -35,4 +35,12 @@ class Cli
     puts "Good Bye!"
   end
 
+  def get_news
+    url = 'https://newsapi.org/v2/top-headlines?'\
+    'country=us&'\
+    "apiKey=#{ENV['NEWS_API_TOKEN']}"
+    req = open(url)
+    response_body = req.read
+    JSON.parse(response_body)
+  end
 end
