@@ -10,6 +10,9 @@ class Cli
   def list
     puts "Here is the List:"
     @items = Library.list_items
+    # @items.each_with_index(1) do |item|
+    #   puts "#{i}. #{item.name} - #{item.atr1} - #{item.atr2}"
+    # end
   end
 
   def menu
@@ -17,15 +20,10 @@ class Cli
     input = nil
     while input != "exit"
       input = gets.strip.downcase
-      case input
-      when "list"
+      if input.to_i > 0
+        puts @deals[input.to_i - 1]
+      elsif input == "list"
         list
-      when "1"
-        puts "You know about One"
-      when "2"
-        puts "You know about Two"
-      when "3"
-        puts "You know about Three"
       else
         puts "Item Not Found"
         list
