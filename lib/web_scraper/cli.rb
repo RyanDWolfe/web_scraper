@@ -1,6 +1,15 @@
 class Cli
 
-attr_reader :news
+attr_accessor :news
+
+  USER_DISPLAY = {
+    intro_header: "Here are today's news headlines:\n\n",
+    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nrefresh\nset country\nexit\n\nWhat would you like to do?",
+    detail_input_options: "\n\nType 'list' to return or 'open' to visit the webpage for this article.",
+    country_input_options: "\n\nWhat country would you like to see news for?\n\n",
+    not_found: "\n\nItem Not Found\n\n",
+    exit: "\n\nGood Bye!\n\n"
+  }
 
   def initialize
     @news = News.new
@@ -8,11 +17,12 @@ attr_reader :news
   end
 
   def list
-    puts "Here are today's news headlines:\n\n"
+    puts USER_DISPLAY[:intro_header]
     @news.articles.each_with_index do |item, i|
       puts "#{i+1}: #{item['title']}"
     end
-    puts "\n\nEnter the number you want more info on, type 'list' to return to the list or type 'exit':"
+    puts "\n\nThere are #{news.total_results} news articles"
+    puts USER_DISPLAY[:main_input_options]
     input_handler
   end
 
@@ -25,16 +35,21 @@ attr_reader :news
           article_num = input.to_i - 1
           article = @news.articles[article_num]
           puts "#{article['description']}"
-          puts "\n\nType 'list' to return or 'open' to visit the webpage for this article"
+          puts USER_DISPLAY[:detail_input_options]
       elsif input == "list"
         list
       elsif input == "open"
         puts article_num
         open_article(article_num)
+      elsif input == "refresh"
+        @news = News.new
+        list
+      elsif input == "set country"
+        puts USER_DISPLAY[:country_input_options]
       elsif input == "exit"
         close_program
       else
-        puts "\n\nItem Not Found\n\n"
+        puts USER_DISPLAY[:not_found]
         list
       end
     end
@@ -45,7 +60,7 @@ attr_reader :news
   end
 
   def close_program
-    puts "\n\nGood Bye!\n\n"
+    puts USER_DISPLAY[:exit]
     system("close")
   end
 
