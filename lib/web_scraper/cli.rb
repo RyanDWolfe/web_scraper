@@ -1,19 +1,17 @@
 class Cli
 
-  def call
+attr_reader :news
+
+  def initialize
+    @news = News.new
     list
-    menu
   end
 
   def list
-    @news = News.new
     puts "Here is today's news headlines:\n\n"
     @news.articles.each_with_index do |item, i|
       puts "#{i+1}: #{item['title']}"
     end
-  end
-
-  def menu
     puts "\n\nEnter the number you want more info on, type 'list' to return to the list or type 'exit':"
     input = nil
     article_num = nil
@@ -44,6 +42,8 @@ class Cli
   end
 
   def close_program
-    puts "Good Bye!"
+    puts "\n\nGood Bye!\n\n"
+    system("close")
   end
+
 end
