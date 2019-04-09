@@ -39,6 +39,8 @@ attr_accessor :news
       if input.to_i > 0 && input.to_i <= news.total_results - 1
           article_num = input.to_i - 1
           article = @news.articles[article_num]
+          puts "\n\nRetriving article...\n\n"
+          sleep(1)
           puts "#{article['description']}"
           puts USER_DISPLAY[:detail_input_options]
       elsif input == "list" || input == "l"
