@@ -4,10 +4,12 @@ attr_accessor :news
 
   USER_DISPLAY = {
     intro_header: "Here are today's news headlines:\n\n",
-    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nsc: set country\ne: exit\n\nWhat would you like to do?",
+    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nc: set country\ns: set source\ne: exit\n\nWhat would you like to do?",
     detail_input_options: "\n\nType 'list' or 'l' to return or 'open' or 'o' to visit the webpage for this article.",
     country_input_options: "\n\nWhat country would you like to see news for?\n\n",
-    country_codes: "us, ar, au",
+    country_codes: "Country codes:\n\nus\nar\nau\nor any other valid country codes...",
+    source_input_options: "\n\nWhat news source would you like to see news for?\n\n",
+    source_codes: "Type 'list' to return or one of the following:\nbbc-news\nabc-news\nbloomberg\nor any other valid news source...",
     not_found: "\n\nItem Not Found\n\n",
     exit: "\n\nGood Bye!\n\n"
   }
@@ -21,6 +23,7 @@ attr_accessor :news
     puts USER_DISPLAY[:intro_header]
     @news.articles.each_with_index do |item, i|
       puts "#{i+1}: #{item['title']}"
+      sleep(0.1)
     end
     puts "\n\nThere are #{news.total_results} news articles."
     puts USER_DISPLAY[:main_input_options]
@@ -45,8 +48,10 @@ attr_accessor :news
       elsif input == "refresh" || input == "r"
         @news = News.new
         list
-      elsif input == "set country" || input == "sc"
+      elsif input == "set country" || input == "c"
         country_input_handler
+      elsif input == "set source" || input == "s"
+        source_input_handler
       elsif input == "exit" || input == 'e'
         close_program
       else
@@ -60,7 +65,14 @@ attr_accessor :news
   def country_input_handler
     puts USER_DISPLAY[:country_input_options]
     puts USER_DISPLAY[:country_codes]
-    @news.refresh_news(gets.strip.downcase)
+    @news.refresh_news(country = gets.strip.downcase, source = "null")
+    list
+  end
+
+  def source_input_handler
+    puts USER_DISPLAY[:source_input_options]
+    puts USER_DISPLAY[:source_codes]
+    @news.refresh_news(country = "#{@news.country}", source = "#{gets.strip.downcase}")
     list
   end
 
