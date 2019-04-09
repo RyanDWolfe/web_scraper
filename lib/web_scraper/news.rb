@@ -6,13 +6,14 @@ attr_accessor :articles, :total_results, :article_source, :country
     refresh_news
   end
 
-  def refresh_news(country = 'us', source = "null")
+  def refresh_news(country = 'us', source = "null", page = 1)
     puts "\n\nGetting news...\n\n"
     sleep(0.25)
     begin
       url = "https://newsapi.org/v2/top-headlines?"
       url += "country=#{country}&"
-      url += "source=#{source}&" # not working
+      url += "source=#{source}&" # not working, seem to need to change end-point to /v2/sources
+      url += "page=#{page}&"
       url += "apiKey=#{ENV['NEWS_API_TOKEN']}"
       req = open(url)
       response_body = req.read
@@ -20,14 +21,14 @@ attr_accessor :articles, :total_results, :article_source, :country
       @articles = news['articles']
       @total_results = news['totalResults']
       @country = country
-      @article_source = news['id'] #not used, making API call instead
+      @article_source = news['id'] #not used returns null, making API call instead
     rescue
-      puts "We were unable to get the news, try again later"
+      puts "We were unable to get the news, try again later."
     end
   end
 
   def search_news
-
+    #use regex to search in article title, description, and content. Then show list of articles that have a match
   end
 
 end

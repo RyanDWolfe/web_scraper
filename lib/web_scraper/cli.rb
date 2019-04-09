@@ -4,13 +4,14 @@ attr_accessor :news
 
   USER_DISPLAY = {
     intro_header: "Here are today's news headlines:\n\n",
-    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nc: set country\ns: set source\ne: exit\n\nWhat would you like to do?",
+    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nc: set country\ns: set source\np: change page\ne: exit\n\nWhat would you like to do?",
     detail_input_options: "\n\nType 'list' or 'l' to return or 'open' or 'o' to visit the webpage for this article.",
     country_input_options: "\n\nWhat country would you like to see news for?\n\n",
     country_codes: "Country codes:\n\nus\nar\nau\nor any other valid country codes...",
     source_input_options: "\n\nWhat news source would you like to see news for?\n\n",
     source_codes: "Type 'list' to return or one of the following:\nbbc-news\nabc-news\nbloomberg\nor any other valid news source...",
-    not_found: "\n\nItem Not Found\n\n",
+    page_request: "\n\nType the page number you would like to see.",
+    not_found: "\n\nNot Found\n\n",
     exit: "\n\nGood Bye!\n\n"
   }
 
@@ -52,6 +53,8 @@ attr_accessor :news
         country_input_handler
       elsif input == "set source" || input == "s"
         source_input_handler
+      elsif input == "change page" || input == "p"
+        page_input_handler(news.total_results)
       elsif input == "exit" || input == 'e'
         close_program
       else
@@ -65,14 +68,23 @@ attr_accessor :news
   def country_input_handler
     puts USER_DISPLAY[:country_input_options]
     puts USER_DISPLAY[:country_codes]
-    @news.refresh_news(country = gets.strip.downcase, source = "null")
+    @news.refresh_news(country = gets.strip.downcase, source = "null") # consider using symbols
     list
   end
 
   def source_input_handler
     puts USER_DISPLAY[:source_input_options]
     puts USER_DISPLAY[:source_codes]
-    @news.refresh_news(country = "#{@news.country}", source = "#{gets.strip.downcase}")
+    @news.refresh_news(country = "#{@news.country}", source = "#{gets.strip.downcase}") # consider using symbols
+    list
+  end
+
+  def page_input_handler(total_results)
+    puts "\n\nThere are #{(total_results/20).floor+1} pages.\n"
+    puts USER_DISPLAY[:page_request]
+    @news.refresh_news(country = "#{@news.country}","null", page = "#{page_input = gets.strip.downcase.to_i}") # consider using symbols
+    puts "\n\nYou are now on page #{page_input}.\n\n"
+    sleep(1)
     list
   end
 
