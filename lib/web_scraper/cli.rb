@@ -7,6 +7,7 @@ attr_accessor :news
     main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nsc: set country\ne: exit\n\nWhat would you like to do?",
     detail_input_options: "\n\nType 'list' or 'l' to return or 'open' or 'o' to visit the webpage for this article.",
     country_input_options: "\n\nWhat country would you like to see news for?\n\n",
+    country_codes: "us, ar, au",
     not_found: "\n\nItem Not Found\n\n",
     exit: "\n\nGood Bye!\n\n"
   }
@@ -21,7 +22,7 @@ attr_accessor :news
     @news.articles.each_with_index do |item, i|
       puts "#{i+1}: #{item['title']}"
     end
-    puts "\n\nThere are #{news.total_results} news articles"
+    puts "\n\nThere are #{news.total_results} news articles."
     puts USER_DISPLAY[:main_input_options]
     input_handler
   end
@@ -45,19 +46,22 @@ attr_accessor :news
         @news = News.new
         list
       elsif input == "set country" || input == "sc"
-        puts USER_DISPLAY[:country_input_options]
+        country_input_handler
       elsif input == "exit" || input == 'e'
         close_program
       else
         puts USER_DISPLAY[:not_found]
+        sleep(2)
         list
       end
     end
   end
 
   def country_input_handler
-    # Get input
-
+    puts USER_DISPLAY[:country_input_options]
+    puts USER_DISPLAY[:country_codes]
+    @news.refresh_news(gets.strip.downcase)
+    list
   end
 
   def open_article(article_num)
