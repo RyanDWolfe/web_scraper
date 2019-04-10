@@ -60,7 +60,7 @@ attr_accessor :news
         page_input_handler(news.total_results)
       elsif input == "find" || input == "f"
         puts USER_DISPLAY[:search]
-        search_news(gets.strip.downcase) #case sensitivity of articles is an issue, not sure where this searches
+        search_news(gets.chomp)
       elsif input == "exit" || input == 'e'
         close_program
       else
@@ -95,17 +95,15 @@ attr_accessor :news
   end
 
   def search_news(search_term)
+    puts "\n\nSearching...\n\n"
+    sleep(1)
     @news.articles.each_with_index do |item, i|
       if item['description'].include?(search_term)
-        puts "\n\nSearching...\n\n"
-        sleep(1)
         puts "#{i+1}: #{item['title']}"
         sleep(0.1)
-        puts USER_DISPLAY[:main_input_options]
-      else
-        return
       end
     end
+    puts USER_DISPLAY[:main_input_options]
   end
 
   def open_article(article_num)
