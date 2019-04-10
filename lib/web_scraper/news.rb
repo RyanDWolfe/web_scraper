@@ -18,7 +18,6 @@ attr_accessor :articles, :total_results, :article_source, :country
       end
       url += "page=#{page}&"
       url += "apiKey=#{ENV['NEWS_API_TOKEN']}"
-      puts url
       req = open(url)
       response_body = req.read
       news = JSON.parse(response_body)

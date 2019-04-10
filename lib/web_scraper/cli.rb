@@ -62,7 +62,7 @@ attr_accessor :news
         puts USER_DISPLAY[:search]
         search_news(gets.chomp)
       elsif input == "exit" || input == 'e'
-        close_program
+        Cli.close_program
       else
         puts USER_DISPLAY[:not_found]
         sleep(2)
@@ -111,9 +111,9 @@ attr_accessor :news
     system("open #{@news.articles[article_num]['url']}")
   end
 
-  def close_program
+  def self.close_program
     puts USER_DISPLAY[:exit]
-    system("close")
+    exit(true)
   end
 
 end
