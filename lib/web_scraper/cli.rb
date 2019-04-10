@@ -95,10 +95,11 @@ attr_accessor :news
   end
 
   def search_news(search_term)
-    puts "\n\nSearching...\n\n"
+    search_term = search_term.downcase
+    puts "\n\nSearching... for \"#{search_term}\"\n\n"
     sleep(1)
     @news.articles.each_with_index do |item, i|
-      if item['description'].include?(search_term)
+      if item['title'].downcase.include?(search_term) || (item['description'] && item['description'].downcase.include?(search_term))
         puts "#{i+1}: #{item['title']}"
         sleep(0.1)
       end
