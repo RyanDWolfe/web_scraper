@@ -6,15 +6,19 @@ attr_accessor :articles, :total_results, :article_source, :country
     refresh_news
   end
 
-  def refresh_news(country = 'us', source = "null", page = 1)
+  def refresh_news(country: "us", source: nil, page: 1)
     puts "\n\nGetting news...\n\n"
     sleep(0.25)
     begin
       url = "https://newsapi.org/v2/top-headlines?"
-      url += "country=#{country}&" #this might be over-ridding the source call
-      url += "source=#{source}&" # not working, seem to need to change end-point to /v2/sources
+      if source
+        url += "sources=#{source}&"
+      else
+        url += "country=#{country}&"
+      end
       url += "page=#{page}&"
       url += "apiKey=#{ENV['NEWS_API_TOKEN']}"
+      puts url
       req = open(url)
       response_body = req.read
       news = JSON.parse(response_body)

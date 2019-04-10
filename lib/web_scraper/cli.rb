@@ -74,21 +74,21 @@ attr_accessor :news
   def country_input_handler
     puts USER_DISPLAY[:country_input_options]
     puts USER_DISPLAY[:country_codes]
-    @news.refresh_news(country = gets.strip.downcase, source = "null") # consider using symbols
+    @news.refresh_news(country: gets.strip.downcase)
     list
   end
 
   def source_input_handler
     puts USER_DISPLAY[:source_input_options]
     puts USER_DISPLAY[:source_codes]
-    @news.refresh_news(country = "#{@news.country}", source = "#{gets.strip.downcase}") # consider using symbols
+    @news.refresh_news(source: "#{gets.strip.downcase}")
     list
   end
 
   def page_input_handler(total_results)
     puts "\n\nThere are #{(total_results/20).floor+1} pages.\n"
     puts USER_DISPLAY[:page_request]
-    @news.refresh_news(country = "#{@news.country}","null", page = "#{page_input = gets.strip.downcase.to_i}") # consider using symbols
+    @news.refresh_news(country: "#{@news.country}", page: "#{page_input = gets.strip.downcase.to_i}")
     puts "\n\nYou are now on page #{page_input}.\n\n"
     sleep(1)
     list
