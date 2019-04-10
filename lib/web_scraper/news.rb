@@ -11,7 +11,7 @@ attr_accessor :articles, :total_results, :article_source, :country
     sleep(0.25)
     begin
       url = "https://newsapi.org/v2/top-headlines?"
-      url += "country=#{country}&"
+      url += "country=#{country}&" #this might be over-ridding the source call
       url += "source=#{source}&" # not working, seem to need to change end-point to /v2/sources
       url += "page=#{page}&"
       url += "apiKey=#{ENV['NEWS_API_TOKEN']}"
@@ -26,9 +26,4 @@ attr_accessor :articles, :total_results, :article_source, :country
       puts "We were unable to get the news, try again later."
     end
   end
-
-  def search_news
-    #use regex to search in article title, description, and content. Then show list of articles that have a match
-  end
-
 end

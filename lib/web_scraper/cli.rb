@@ -4,13 +4,14 @@ attr_accessor :news
 
   USER_DISPLAY = {
     intro_header: "Here are today's news headlines:\n\n",
-    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nc: set country\ns: set source\np: change page\ne: exit\n\nWhat would you like to do?",
+    main_input_options: "\n\nType the number of the acticle you want to learn more about.\n\nOther Available Commands:\n\nr: refresh\nc: set country\ns: set source\np: change page\nf: find\ne: exit\n\nWhat would you like to do?",
     detail_input_options: "\n\nType 'list' or 'l' to return or 'open' or 'o' to visit the webpage for this article.",
     country_input_options: "\n\nWhat country would you like to see news for?\n\n",
     country_codes: "Country codes:\n\nus\nar\nau\nor any other valid country codes...",
     source_input_options: "\n\nWhat news source would you like to see news for?\n\n",
     source_codes: "Type 'list' to return or one of the following:\nbbc-news\nabc-news\nbloomberg\nor any other valid news source...",
     page_request: "\n\nType the page number you would like to see.",
+    search: "\n\nWhat would you like to search for?\n\n",
     not_found: "\n\nNot Found\n\n",
     exit: "\n\nGood Bye!\n\n"
   }
@@ -57,6 +58,9 @@ attr_accessor :news
         source_input_handler
       elsif input == "change page" || input == "p"
         page_input_handler(news.total_results)
+      elsif input == "find" || input == "f"
+        puts USER_DISPLAY[:search]
+        search_news(gets.strip.downcase) #case sensitivity of articles is an issue, not sure where this searches
       elsif input == "exit" || input == 'e'
         close_program
       else
@@ -88,6 +92,20 @@ attr_accessor :news
     puts "\n\nYou are now on page #{page_input}.\n\n"
     sleep(1)
     list
+  end
+
+  def search_news(search_term)
+    @news.articles.each_with_index do |item, i|
+      if item['description'].include?(search_term)
+        puts "\n\nSearching...\n\n"
+        sleep(1)
+        puts "#{i+1}: #{item['title']}"
+        sleep(0.1)
+        puts USER_DISPLAY[:main_input_options]
+      else
+        return
+      end
+    end
   end
 
   def open_article(article_num)
